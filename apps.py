@@ -5,13 +5,13 @@ from io import BytesIO
 
 # Function to filter data based on ClaimStatus
 def filter_data(df):
-    st.write("Filtering data where 'Status Claim' is 'R'...")
-    if 'Status Claim' not in df.columns:
+    st.write("Filtering data where 'ClaimStatus' is 'R'...")
+    if 'ClaimStatus' not in df.columns:
         st.error("The column 'ClaimStatus' is missing from the uploaded file.")
         return pd.DataFrame()
 
-    st.write(df['Status Claim'].value_counts())
-    df = df[df['Status Claim'] == 'R']
+    st.write(df['ClaimStatus'].value_counts())
+    df = df[df['ClaimStatus'] == 'R']
     return df
 
 # Main processing function
@@ -32,11 +32,11 @@ def move_to_template(df):
 
     # Step 3: Transform to the new template
     required_columns = [
-        "Client Name", "Policy No", "Claim No", "Member No", "Membership", "Patient Name",
-        "Emp ID", "Emp Name", "Claim Type", "Product Type", "Room Option",
-        "Treatment Room Class", "Treatment Place", "Treatment Start", "Treatment Finish",
-        "Diagnosis", "Payment Date", "Billed", "Accepted",
-        "Excess Coy", "Excess Emp", "Excess Total", "Unpaid"
+        "ClientName", "PolicyNo", "ClaimNo", "MemberNo", "Membership", "PatientName",
+        "EmpID", "EmpName", "ClaimType", "ProductType", "RoomOption",
+        "TreatmentRoomClass", "TreatmentPlace", "TreatmentStart", "TreatmentFinish",
+        "PrimaryDiagnosis", "PaymentDate", "Billed", "Accepted",
+        "ExcessCoy", "ExcessEmp", "ExcessTotal", "Unpaid"
     ]
 
     # Check for missing columns
@@ -48,23 +48,23 @@ def move_to_template(df):
     # Create transformed DataFrame
     df_transformed = pd.DataFrame({
         "No": range(1, len(new_df) + 1),
-        "Client Name": new_df["Client Name"],
-        "Policy No": new_df["Policy No"],
-        "Claim No": new_df["Claim No"],
-        "Member No": new_df["Member No"],
+        "Client Name": new_df["ClientName"],
+        "Policy No": new_df["PolicyNo"],
+        "Claim No": new_df["ClaimNo"],
+        "Member No": new_df["MemberNo"],
         "Membership": new_df["Membership"],
-        "Patient Name": new_df["Patient Name"],
-        "Emp ID": new_df["Emp ID"],
-        "Emp Name": new_df["Emp Name"],
-        "Claim Type": new_df["Claim Type"],
-        "Product Type": new_df["Product Type"],
-        "Room Option": new_df["Room Option"],
-        "Treatment Room Class": new_df["Treatment Room Class"],
-        "Treatment Place": new_df["Treatment Place"],
-        "Treatment Start": new_df["Treatment Start"],
-        "Treatment Finish": new_df["Treatment Finish"],
-        "Diagnosis": new_df["Diagnosis"],
-        "Payment Date": new_df["Payment Date"],
+        "Patient Name": new_df["PatientName"],
+        "Emp ID": new_df["EmpID"],
+        "Emp Name": new_df["EmpName"],
+        "Claim Type": new_df["ClaimType"],
+        "Product Type": new_df["ProductType"],
+        "Room Option": new_df["RoomOption"],
+        "Treatment Room Class": new_df["TreatmentRoomClass"],
+        "Treatment Place": new_df["TreatmentPlace"],
+        "Treatment Start": new_df["TreatmentStart"],
+        "Treatment Finish": new_df["TreatmentFinish"],
+        "Diagnosis": new_df["PrimaryDiagnosis"],
+        "Payment Date": new_df["PaymentDate"],
         "Billed": new_df["Billed"],
         "Accepted": new_df["Accepted"],
         "Excess Coy": new_df["ExcessCoy"],
