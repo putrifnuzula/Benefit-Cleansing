@@ -83,34 +83,43 @@ def save_to_excel(df):
     output.seek(0)
     return output
 
-# Streamlit app
-st.title("Benefit Claim Data Processor")
 
 # File uploader
-uploaded_file = st.file_uploader("Upload your Benefit Claim CSV file", type=["csv"])
+uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
 if uploaded_file:
-    try:
-        raw_data = pd.read_csv(uploaded_file)
+    raw_data = pd.read_csv(uploaded_file)
+    
+    # Process data
+    st.write("Processing data...")
+    transformed_data = move_to_template(raw_data)
+    
+    # Show a preview of the transformed data
+    st.write("Transformed Data Preview:")
+    st.dataframe(transformed_data.head())
 
-        # Process data
-        st.write("Processing data...")
-        transformed_data = move_to_template(raw_data)
+    # Compute summary statistics
+    total_claims = len(transformed_data)
+    total_billed = int(transformed_data["Sum of Billed"].sum())
+    total_accepted = int(transformed_data["Sum of Accepted"].sum())
+    total_excess = int(transformed_data["Sum of Excess Total"].sum())
+    total_unpaid = int(transformed_data["Sum of Unpaid"].sum())
 
-        if not transformed_data.empty:
-            # Show a preview of the transformed data
-            st.write("Transformed Data Preview:")
-            st.dataframe(transformed_data.head())
+    st.write("Claim Summary:")
+    st.write(f"- Total Claims: {total_claims:,}")
+    st.write(f"- Total Billed: {total_billed:,.2f}")
+    st.write(f"- Total Accepted: {total_accepted:,.2f}")
+    st.write(f"- Total Excess: {total_excess:,.2f}")
+    st.write(f"- Total Unpaid: {total_unpaid:,.2f}")
 
-            # Download link for the Excel file
-            st.write("Download the transformed data as an Excel file:")
-            excel_file = save_to_excel(transformed_data)
-            st.download_button(
-                label="Download Excel File",
-                data=excel_file,
-                file_name="Transformed_Benefit_Claim_Data.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
-        else:
-            st.error("The transformed data is empty. Please check the input file.")
-    except Exception as e:
-        st.error(f"An error occurred while processing the file: {e}")
+    # User input for filename
+    filename = st.text_input("Enter the Excel file name (without extension):", "Transformed_Claim_Data")
+
+    # Download link for the Excel file
+    if filename:
+        excel_file, final_filename = save_to_excel(transformed_data, filename=filename + ".xlsx")
+        st.download_button(
+            label="Download Excel File",
+            data=excel_file,
+            file_name=final_filename,
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
