@@ -63,7 +63,7 @@ def move_to_template(df):
         "Treatment Place": new_df["TreatmentPlace"],
         "Treatment Start": new_df["TreatmentStart"],
         "Treatment Finish": new_df["TreatmentFinish"],
-        "Diagnosis": new_df["PrimaryDiagnosis"],
+        "Diagnosis": new_df["Diagnosis"],
         "Payment Date": new_df["PaymentDate"],
         "Billed": new_df["Billed"],
         "Accepted": new_df["Accepted"],
