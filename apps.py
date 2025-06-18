@@ -84,6 +84,9 @@ def save_to_excel(df):
     return output
 
 
+# Streamlit app
+st.title("Benefit Cleansing")
+
 # File uploader
 uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
 if uploaded_file:
@@ -98,18 +101,18 @@ if uploaded_file:
     st.dataframe(transformed_data.head())
 
     # Compute summary statistics
-    total_claims = len(transformed_data)
-    total_billed = int(transformed_data["Sum of Billed"].sum())
-    total_accepted = int(transformed_data["Sum of Accepted"].sum())
-    total_excess = int(transformed_data["Sum of Excess Total"].sum())
-    total_unpaid = int(transformed_data["Sum of Unpaid"].sum())
+    total_benefit = len(transformed_data)
+    total_billed = int(transformed_data["Billed"].sum())
+    total_accepted = int(transformed_data["Accepted"].sum())
+    total_excess = int(transformed_data["ExcessTotal"].sum())
+    total_unpaid = int(transformed_data["Unpaid"].sum())
 
     st.write("Claim Summary:")
-    st.write(f"- Total Claims: {total_claims:,}")
-    st.write(f"- Total Billed: {total_billed:,.2f}")
-    st.write(f"- Total Accepted: {total_accepted:,.2f}")
-    st.write(f"- Total Excess: {total_excess:,.2f}")
-    st.write(f"- Total Unpaid: {total_unpaid:,.2f}")
+    st.write(f"- Total Claims: {total_benefit:,}")
+    st.write(f"- Total Billed: {total_billed:,}")
+    st.write(f"- Total Accepted: {total_accepted:,}")
+    st.write(f"- Total Excess: {total_excess:,}")
+    st.write(f"- Total Unpaid: {total_unpaid:,}")
 
     # User input for filename
     filename = st.text_input("Enter the Excel file name (without extension):", "Transformed_Claim_Data")
