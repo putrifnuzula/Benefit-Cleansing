@@ -6,12 +6,12 @@ from io import BytesIO
 # Function to filter data based on ClaimStatus
 def filter_data(df):
     st.write("Filtering data where 'ClaimStatus' is 'R'...")
-    if 'ClaimStatus' not in df.columns:
+    if 'Status_Claim' not in df.columns:
         st.error("The column 'ClaimStatus' is missing from the uploaded file.")
         return pd.DataFrame()
 
-    st.write(df['ClaimStatus'].value_counts())
-    df = df[df['ClaimStatus'] == 'R']
+    st.write(df['Status_Claim'].value_counts())
+    df = df[df['Status_Claim'] == 'R']
     return df
 
 # Main processing function
@@ -23,7 +23,7 @@ def move_to_template(df):
         return pd.DataFrame()
 
     # Step 2: Convert date columns to datetime
-    date_columns = ["TreatmentStart", "TreatmentFinish", "Date", "PaymentDate"]
+    date_columns = ["TreatmentStart", "TreatmentFinish", "PaymentDate"]
     for col in date_columns:
         if col in new_df.columns:
             new_df[col] = pd.to_datetime(new_df[col], errors='coerce')
@@ -35,7 +35,7 @@ def move_to_template(df):
         "ClientName", "PolicyNo", "ClaimNo", "MemberNo", "Membership", "PatientName",
         "EmpID", "EmpName", "ClaimType", "ProductType", "RoomOption",
         "TreatmentRoomClass", "TreatmentPlace", "TreatmentStart", "TreatmentFinish",
-        "PrimaryDiagnosis", "PaymentDate", "Billed", "Accepted",
+        "Diagnosis", "PaymentDate", "Billed", "Accepted",
         "ExcessCoy", "ExcessEmp", "ExcessTotal", "Unpaid"
     ]
 
